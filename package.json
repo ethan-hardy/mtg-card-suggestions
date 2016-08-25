@@ -1,0 +1,22 @@
+{
+  "name": "mtg-card-suggestions",
+  "version": "1.0.0",
+  "description": "Tool to suggest top magic the gathering cards based on colours, format, and price range",
+  "main": "index.js",
+  "dependencies": {
+    "phantomjs-prebuilt": "^2.1.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "magic",
+    "the",
+    "gathering",
+    "card",
+    "suggest"
+  ],
+  "author": "Ethan Hardy",
+  "license": "MIT"
+}
