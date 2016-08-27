@@ -1,6 +1,4 @@
-const casper = require('casper').create({
-  logLevel: 'debug'
-});
+const casper = require('casper').create();
 const fs = require('fs');
 
 const CARD_DATA_JSON_PATH = 'cardData.json';
@@ -82,30 +80,31 @@ const selectFormat = function(format) {
   $('input[value=\'GO\']').click();
 };
 
-const pullFormatData = function(ind = 0, cardData = {}) {
-  casper.then(() => {
-    const currentFormat = FORMAT_LIST[ind];
-    casper.page.evaluate(selectFormat, currentFormat);
-
-    getCurrentFormatList().then((newFormatList) => {
-      const updatedCardData = Object.assign({}, cardData, {[currentFormat]: newFormatList});
-
-      if (ind >= FORMAT_LIST.length) {
-        writeCardData(cardData);
-        casper.exit();
-      } else {
-        pullFormatData(ind + 1, updatedCardData);
-      }
-    });
-  });
-};
+casper.start('http://www.mtgtop8.com/topcards');
 
 casper.options.onError = (e) => {
   casper.echo('Error has occurred in browser');
   casper.echo(e);
 };
 
-casper.start('http://www.mtgtop8.com/topcards');
+casper.options.onResourceRequested = function(casperInstance, requestData, networkRequest) {
+  const urlBlacklist = [
+    'http://match.rtbidder.net',
+    '.png',
+    'showad.js',
+    'impl_v33.js',
+    '.gif',
+    'AdServer',
+    'pagead2',
+    'ad.doubleclick.net'
+  ];
+
+  urlBlacklist.forEach(function(urlToBlacklist) {
+    if (requestData.url.indexOf(urlToBlacklist) > 0) {
+      networkRequest.abort();
+    }
+  });
+};
 
 const formatData = {};
 for (let i = 0; i < FORMAT_LIST.length; i++) {
@@ -115,7 +114,7 @@ for (let i = 0; i < FORMAT_LIST.length; i++) {
       casper.page.evaluate(selectFormat, format);
 
       getCurrentFormatList().then((newFormatList) => {
-        casper.echo(`Format ${format} scrape complete`);
+        casper.echo(`${format} scrape complete`);
         formatData[format] = newFormatList;
       });
     });
@@ -124,6 +123,7 @@ for (let i = 0; i < FORMAT_LIST.length; i++) {
 
 casper.then(() => {
   writeCardData(formatData);
+  casper.echo('Web scrape complete!');
   casper.exit();
 });
 
