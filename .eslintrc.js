@@ -1,7 +1,8 @@
 module.exports = {
     "env": {
         "phantomjs": true,
-        "browser": true
+        "browser": true,
+        "es6": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -9,7 +10,7 @@ module.exports = {
         "sourceType": "module"
     },
     "globals": {
-        $: true
+        $: true,
     },
     "rules": {
         "indent": [
