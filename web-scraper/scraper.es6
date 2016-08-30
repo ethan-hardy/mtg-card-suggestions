@@ -20,11 +20,6 @@ const isAtLastPage = function() {
 };
 
 const getCardDataOnCurrentPage = function() {
-  const getNumberFromPercentageText = function(text) {
-    const percentString = text.split(' ')[0];
-    return parseFloat(percentString);
-  };
-
   const cardRows = $('.chosen_tr, .hover_tr');
   const cardData = [];
   for (let i = 0; i < cardRows.length; i++) {
@@ -33,7 +28,8 @@ const getCardDataOnCurrentPage = function() {
     const rowChildren = $(cardRow).children();
     const cardName = $(rowChildren[0]).text();
     const cardPercentageText = $(rowChildren[1]).text();
-    const cardPercent = getNumberFromPercentageText(cardPercentageText);
+    const cardPercent = window.getNumberFromPercentageText(cardPercentageText);
+
 
     const cardDatum = {name: cardName, percent: cardPercent};
     cardData.push(cardDatum);
@@ -105,6 +101,16 @@ casper.options.onResourceRequested = function(casperInstance, requestData, netwo
     }
   });
 };
+
+casper.then(function() {
+  casper.evaluate(function() {
+    // set up helper fns in evaluate scope
+    window.getNumberFromPercentageText = function(text) {
+      const percentString = text.split(' ')[0];
+      return parseFloat(percentString);
+    };
+  });
+});
 
 const formatData = {};
 for (let i = 0; i < FORMAT_LIST.length; i++) {
