@@ -10,7 +10,8 @@ module.exports = {
         "sourceType": "module"
     },
     "globals": {
-        $: true,
+        $: false,
+        "__dirname": false
     },
     "rules": {
         "indent": [
@@ -28,6 +29,7 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-console": "off"
     }
 };

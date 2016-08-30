@@ -1,7 +1,7 @@
 const casper = require('casper').create();
 const fs = require('fs');
 
-const CARD_DATA_JSON_PATH = 'cardData.json';
+const CARD_LIST_FILE_PATH = 'card-list.json';
 
 const FORMATS = {
   STANDARD: 'Standard',
@@ -30,7 +30,6 @@ const getCardDataOnCurrentPage = function() {
     const cardPercentageText = $(rowChildren[1]).text();
     const cardPercent = window.getNumberFromPercentageText(cardPercentageText);
 
-
     const cardDatum = {name: cardName, percent: cardPercent};
     cardData.push(cardDatum);
   }
@@ -43,11 +42,11 @@ const clickNext = function() {
 };
 
 const writeCardData = function(cardData) {
-  if (!fs.exists(CARD_DATA_JSON_PATH)) {
-    fs.touch(CARD_DATA_JSON_PATH);
+  if (!fs.exists(CARD_LIST_FILE_PATH)) {
+    fs.touch(CARD_LIST_FILE_PATH);
   }
 
-  fs.write(CARD_DATA_JSON_PATH, JSON.stringify(cardData), 'w');
+  fs.write(CARD_LIST_FILE_PATH, JSON.stringify(cardData), 'w');
 };
 
 const getCurrentFormatList = function(existingData = []) {
