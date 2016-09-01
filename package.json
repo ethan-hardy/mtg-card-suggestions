@@ -17,7 +17,8 @@
   "scripts": {
     "test": "test",
     "build": "babel web-scraper/scraper.es6 --watch --out-file web-scraper/casper-scraper.js",
-    "scrape": "casperjs web-scraper/casper-scraper.js"
+    "scrape": "casperjs web-scraper/casper-scraper.js",
+    "populate": "node card-data-population/populator.es6"
   },
   "keywords": [
     "magic",
