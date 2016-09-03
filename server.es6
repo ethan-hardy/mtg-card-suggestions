@@ -35,10 +35,10 @@ const colorsSatisfyColorRules = function(colorString, colorRuleText) {
 
 const getCardsForParams = function(allCards, {format, type, colors}) {
   // params: {format: String, type: String, colors: String}
-  return _.filter(allCards[format], (card) => {
+  return _(allCards[format]).filter((card) => {
     const typeIsSatisfied = type === ALL_TYPES || (_.isArray(card.types) && card.types.includes(type));
     return typeIsSatisfied && colorsSatisfyColorRules(colors, card.colorRules);
-  });
+  }).map('name');
 };
 
 app.get('/', (req, res) => {
@@ -46,7 +46,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/cards', (req, res) => {
-  console.log(req.query);
   if (!existingCardList) {
     return app.status(501).send({error: 'Card list not found!'});
   }
@@ -59,4 +58,6 @@ app.get('/api/cards', (req, res) => {
   res.json({cards});
 });
 
-app.listen(3000);
+app.listen(3000, undefined, undefined, () => {
+  console.log('App listening on port 3000');
+});
