@@ -34,7 +34,7 @@ const pullDataForCardName = function(cardName) {
     {find: /Æ/g, replace: '%C3%86'},
     {find: /û/g, replace: '%C3%BB'},
     {find: /ö/g, replace: '%C3%B6'},
-    {find: / \/ .*/, replace: ''} // TODO
+    {find: / \/ .*/, replace: ''} // TODO: actually handle dual cards (ie far // away)
   ];
   const formatString = function(string) {
     let formattedString = string;
@@ -95,7 +95,7 @@ const getColorRulesFromCardData = function(cardData) {
     match = rulesTextSymbolRegex.exec(cardData.text);
   }
 
-  const isLand = _.some(cardData.types, LAND_CARD_TYPE);
+  const isLand = _.isArray(cardData.types) && cardData.types.includes(LAND_CARD_TYPE);
   if (isLand) { return getRulesStringFromList(rules); }
 
   match = manaCostSymbolRegex.exec(cardData.manaCost);
@@ -135,7 +135,7 @@ const getPopulatedCardList = function*() {
   const fullFormatMapString = fs.readFileSync(CARD_LIST_FILE_PATH, 'utf8');
   const fullFormatMap = JSON.parse(fullFormatMapString);
   const existingCardListString = fileExists(POPULATED_CARD_LIST_FILE_PATH) ?
-    fs.readFileSync(POPULATED_CARD_LIST_FILE_PATH, 'utf8') : {};
+    fs.readFileSync(POPULATED_CARD_LIST_FILE_PATH, 'utf8') : '{}';
   const existingCardList = JSON.parse(existingCardListString);
   const populatedCardList = existingCardList.incomplete ?
     existingCardList : {};
