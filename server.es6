@@ -41,9 +41,7 @@ const getCardsForParams = function(allCards, {format, type, colors}) {
   }).map('name');
 };
 
-app.get('/', (req, res) => {
-  res.json({hello: 'world'});
-});
+app.use('/', express.static('./client'));
 
 app.get('/api/cards', (req, res) => {
   if (!existingCardList) {
@@ -58,6 +56,6 @@ app.get('/api/cards', (req, res) => {
   res.json({cards});
 });
 
-app.listen(3000, undefined, undefined, () => {
+app.listen(3000, () => {
   console.log('App listening on port 3000');
 });

@@ -7,7 +7,10 @@ module.exports = {
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
     },
     "globals": {
         $: false,
@@ -31,5 +34,8 @@ module.exports = {
             "always"
         ],
         "no-console": "off"
-    }
+    },
+    "plugins": [
+      "react"
+    ]
 };
