@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './react-components/root.es6';
+import Root from './react-components/root';
 
 ReactDOM.render(
   React.createElement(Root),

@@ -1,6 +1,5 @@
 module.exports = {
     "env": {
-        "phantomjs": true,
         "browser": true,
         "es6": true
     },
@@ -33,6 +32,7 @@ module.exports = {
             "error",
             "always"
         ],
+        "react/jsx-uses-vars": 1,
         "no-console": "off"
     },
     "plugins": [
