@@ -1,0 +1,28 @@
+body {
+  margin: 0px;
+}
+
+.app-cntnr {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(245, 243, 237);
+}
+
+.card-filter-cntnr {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.bottom-cntnr {
+
+}
+
+.color-checkbox-cntnr {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.color-checkbox {
+  margin: auto 10px auto 5px;
+}

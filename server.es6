@@ -47,6 +47,11 @@ const getCardsForParams = function(allCards, {format, type, colors}) {
 
 app.use('/', express.static('./client'));
 
+app.all('/api/*', (req, res, next) => {
+  console.log(`Request received for ${req.originalUrl} at ${new Date()}`);
+  next();
+});
+
 app.get('/api/cards', (req, res) => {
   if (!existingCardList) {
     return app.status(501).send({error: 'Card list not found!'});
@@ -58,6 +63,15 @@ app.get('/api/cards', (req, res) => {
 
   const cards = getCardsForParams(existingCardList, {format, type, colors});
   res.json({cards});
+});
+
+app.get('/api/allFormats', (req, res) => {
+  if (!existingCardList) {
+    return app.status(501).send({error: 'Card list not found!'});
+  }
+
+  const formats = Object.keys(existingCardList);
+  res.json({formats});
 });
 
 app.listen(3000, () => {
