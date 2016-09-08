@@ -19,8 +19,12 @@ const existingCardList = fileExists(POPULATED_CARD_LIST_FILE_PATH) ?
   JSON.parse(fs.readFileSync(POPULATED_CARD_LIST_FILE_PATH, 'utf8')) : null;
 
 const colorsSatisfyColorRules = function(colorString, colorRuleText) {
+  // for some reason ''.split(',') returns [ '' ], which throws off the logic
+  if (!colorRuleText.length) { return true; }
+
   const colors = colorString.split(''); // turn into an array
   const colorRules = colorRuleText.split(',');
+
   for (const colorRule of colorRules) {
     // colorRules can be either of the form 'X', or the form 'X/Y', where X,Y are color symbols
     // so, check if colorRule[0] OR colorRule[2] is contained in colors; otherwise, return false
