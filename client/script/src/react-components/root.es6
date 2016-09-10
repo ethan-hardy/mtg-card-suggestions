@@ -4,6 +4,8 @@ import CardList from './card-list.es6';
 import CardDetail from './card-detail.es6';
 import CardFilterControls from './card-filter-controls.es6';
 
+const PAGE_SIZE = 20;
+
 const urlForFilters = function(selectedFormat, selectedColors) {
   // selectedFormat is required
   const colorStringUrlSection = _.reduce(selectedColors, (str, colorIsSelected, colorSymbol) => {
@@ -37,7 +39,7 @@ const pullAllFormats = function() {
       if (req.status !== 200) { reject(`Got bad response code ${req.status}`); }
 
       const json = JSON.parse(this.responseText);
-      resolve(json.allFormats);
+      resolve(json.formats);
     };
     req.error = reject;
 
@@ -50,7 +52,7 @@ class Root extends React.Component {
   constructor() {
     super();
     this.state = {
-      filteredCards: [],
+      filteredCardNames: [],
       displayedCard: null,
       formats: []
     };
@@ -66,15 +68,15 @@ class Root extends React.Component {
 
   onSubmitNewFilters = (selectedFormat, selectedColors) => {
     pullCardsForFilters(selectedFormat, selectedColors)
-      .then(this.onCardDataLoaded)
+      .then(this.onCardListLoaded)
       .catch((error) => {
-        window.alert(error);
+        throw new Error(error);
       });
   }
 
   onCardListLoaded = (cardList) => {
     this.setState({
-      filteredCards: cardList,
+      filteredCardNames: cardList,
       displayedCard: null
     });
   }
@@ -84,7 +86,17 @@ class Root extends React.Component {
   }
 
   render() {
-    const {filteredCards, displayedCard, selectedColors, formats} = this.state;
+    const {filteredCardNames, displayedCard, selectedColors, formats} = this.state;
+    if (!formats.length) { return <div className='app-cntnr' />; }
+
+    const bottomContainer = filteredCardNames.length ?
+      (<div className='bottom-cntnr'>
+        <CardList cardNames={filteredCardNames}
+          onSelectCard={this.onSelectCard}
+          pageSize={PAGE_SIZE}/>
+        <CardDetail cardName={displayedCard} />
+      </div>) : <div className='bottom-cntnr' />;
+
     return (
       <div className='app-cntnr'>
         <CardFilterControls
@@ -92,10 +104,7 @@ class Root extends React.Component {
           onSubmitNewFilters={this.onSubmitNewFilters}
           formats={formats}
         />
-        <div className='bottom-cntnr'>
-          <CardList cards={filteredCards} onSelectCard={this.onSelectCard} />
-          <CardDetail card={displayedCard} />
-        </div>
+      {bottomContainer}
       </div>
     );
   }

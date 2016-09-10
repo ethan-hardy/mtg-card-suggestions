@@ -15,6 +15,7 @@ module.exports = {
     // plugins: [
     //     new ExtractTextPlugin('style/main.css')
     // ]
+    devtool: "source-map"
 };
 
 // TODO: uncomment these lines when styling is added

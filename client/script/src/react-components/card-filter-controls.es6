@@ -19,25 +19,29 @@ const getInitialColorMap = function() {
 };
 
 const getFormatOptions = function(formats) {
-  return _.map(formats, (format) => {
+  return _.map(formats, (format, index) => {
     return (
-      <option selected={format.selected}
-        value={format.name}
-        key={format.name}>
-        {format.name}
+      <option
+        value={index === 0}
+        key={format}>
+        {format}
       </option>
     );
   });
 };
 
 class CardFilterControls extends React.Component {
-  // props {formats, submitNewFilters, selectedFormat}
   constructor(props) {
     super(props);
     this.state = {
       selectedColors: getInitialColorMap(),
-      selectedFormat: props.selectedFormat
+      selectedFormat: props.formats[0] || null
     };
+  }
+
+  static propTypes = {
+    formats: React.PropTypes.array.isRequired,
+    onSubmitNewFilters: React.PropTypes.func.isRequired
   }
 
   colorSelected = (colorSymbol, e) => {
@@ -55,7 +59,7 @@ class CardFilterControls extends React.Component {
   }
 
   submitNewFiltersClicked = () => {
-    this.props.onSubmitNewFilters(this.state.selectedColors, this.state.selectedFormat);
+    this.props.onSubmitNewFilters(this.state.selectedFormat, this.state.selectedColors);
   }
 
   render() {
