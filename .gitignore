@@ -4,3 +4,4 @@ web-scraper/card-list.json
 card-data-population/populated-card-list.json
 /saved-data/
 /client/build/
+npm-debug.log
