@@ -6,7 +6,7 @@ module.exports = {
     entry: './client/script/src/index.es6',
     output: {
         path: './client/',
-        filename: 'script/main.js'
+        filename: 'build/main.js'
     },
     module: {
         loaders: [
@@ -25,7 +25,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('style/main.css')
+        new ExtractTextPlugin('build/main.css')
     ],
     // postcss: [ autoprefixer({ browsers: ['last 2 versions'] })],
     devtool: 'source-map'

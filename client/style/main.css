@@ -1,18 +1,18 @@
 @font-face {
   font-family: 'beleren-bold';
-  src: url(fonts/beleren-bold.ttf);
+  src: url('fonts/beleren-bold.ttf');
 }
 
 @font-face {
   font-family: 'hkgrotesk';
   font-weight: normal;
-  src: url(fonts/hkgrotesk-light.otf);
+  src: url('fonts/hkgrotesk-light.otf');
 }
 
 @font-face {
   font-family: 'hkgrotesk';
-  font-weight: bold;;
-  src: url(fonts/hkgrotesk-medium.otf);
+  font-weight: bold;
+  src: url('fonts/hkgrotesk-medium.otf');
 }
 
 body {
@@ -26,6 +26,7 @@ h1 {
   font-family: 'beleren-bold';
   font-size: 22px;
   margin: 0px 0px 10px 0px;
+  text-align: center;
 }
 
 p {
@@ -58,11 +59,8 @@ select {
 
 .card-filter-cntnr {
   width: 700px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
 }
 
 .card-image {
@@ -74,21 +72,22 @@ select {
   font-size: 18px;
   font-weight: bold;
   padding: 10px;
-  background-color: rgb(109, 109, 109);
+  background-color: rgb(112, 112, 112);
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .button:hover {
-  background-color: rgb(79, 79, 79);
+  background-color: rgb(91, 91, 91);
 }
 
 .button:active {
-  background-color: rgb(62, 61, 61);
+  background-color: rgb(72, 72, 72);
 }
 
 .go-button {
-  margin-top: 30px;
   display: inline-block;
+  padding: 10px 15px;
 }
 
 .bottom-cntnr {
@@ -96,12 +95,15 @@ select {
 }
 
 .color-symbol {
-  margin-right: 5px;
+  /*margin-right: 5px;*/
+}
+
+.justify-spc-btwn-cntnr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .color-symbol--unselected {
-  -webkit-filter: brightness(40%);
-          filter: brightness(40%);
+  filter: brightness(40%);
 }
-
-/*# sourceMappingURL=main.css.map*/

@@ -1,7 +1,6 @@
 /node_modules/
 casper-scraper.js
 web-scraper/card-list.json
-client/script/main.js
-client/script/main.js.map
 card-data-population/populated-card-list.json
 /saved-data/
+/client/build/
