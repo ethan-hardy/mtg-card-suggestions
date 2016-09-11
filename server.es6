@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 const POPULATED_CARD_LIST_FILE_PATH = 'card-data-population/populated-card-list.json';
-const ALL_TYPES = 'ALL_TYPES';
+const ALL_TYPES = 'All-types', NONLANDS = 'Nonlands', LAND = 'Land';
 
 const fileExists = function(path) {
   try {
@@ -40,7 +40,10 @@ const colorsSatisfyColorRules = function(colorString, colorRuleText) {
 const getCardsForParams = function(allCards, {format, type, colors}) {
   // params: {format: String, type: String, colors: String}
   return _(allCards[format]).filter((card) => {
-    const typeIsSatisfied = type === ALL_TYPES || (_.isArray(card.types) && card.types.includes(type));
+    const typeIsSatisfied = type === ALL_TYPES ||
+      (type === NONLANDS && _.isArray(card.types) && !card.types.includes(LAND)) ||
+      (_.isArray(card.types) && card.types.includes(type));
+
     return typeIsSatisfied && colorsSatisfyColorRules(colors, card.colorRules);
   }).map('name');
 };
