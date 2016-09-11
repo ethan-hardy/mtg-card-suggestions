@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 
 const POPULATED_CARD_LIST_FILE_PATH = 'card-data-population/populated-card-list.json';
-const ALL_TYPES = 'All-types', NONLANDS = 'Nonlands', LAND = 'Land';
+const ALL_TYPES = 'All-types', NONLANDS = 'Nonland', LAND = 'Land';
 
 const fileExists = function(path) {
   try {

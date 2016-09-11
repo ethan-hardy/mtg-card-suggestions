@@ -2,20 +2,28 @@ import _ from 'lodash';
 import React from 'react';
 import CardList from './card-list.es6';
 import CardDetail from './card-detail.es6';
-import CardFilterControls from './card-filter-controls.es6';
+import CardFilterControls, {TYPE_FILTERS} from './card-filter-controls.es6';
 
 const PAGE_SIZE = 20;
 
-const urlForFilters = function(selectedFormat, selectedColors) {
-  // selectedFormat is required
+const getTypeFilterUrlSection = function(typeFilter) {
+  switch (typeFilter) {
+  case TYPE_FILTERS.LANDS: return 'Land';
+  case TYPE_FILTERS.NONLANDS: return 'Nonland';
+  default: return ''; // TYPE_FILTERS.ALL -- with no type in the query, server will assume all types
+  }
+};
+
+const urlForFilters = function(selectedFormat, selectedColors, selectedTypeFilter) {
   const colorStringUrlSection = _.reduce(selectedColors, (str, colorIsSelected, colorSymbol) => {
     return colorIsSelected ? str + colorSymbol : str;
   }, '');
+  const typeFilter = getTypeFilterUrlSection(selectedTypeFilter);
 
-  return `http://localhost:3000/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}`;
+  return `http://localhost:3000/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}&type=${typeFilter}`;
 };
 
-const pullCardsForFilters = function(selectedFormat, selectedColors = {}) {
+const pullCardsForFilters = function(selectedFormat, selectedColors, selectedTypeFilter) {
   return new Promise(function(resolve, reject) {
     const req = new XMLHttpRequest();
     req.onload = function() {
@@ -26,7 +34,7 @@ const pullCardsForFilters = function(selectedFormat, selectedColors = {}) {
     };
     req.error = reject;
 
-    const url = urlForFilters(selectedFormat, selectedColors);
+    const url = urlForFilters(selectedFormat, selectedColors, selectedTypeFilter);
     req.open('GET', url);
     req.send();
   });
@@ -66,8 +74,8 @@ class Root extends React.Component {
     });
   }
 
-  onSubmitNewFilters = (selectedFormat, selectedColors) => {
-    pullCardsForFilters(selectedFormat, selectedColors)
+  onSubmitNewFilters = (selectedFormat, selectedColors, selectedTypeFilter) => {
+    pullCardsForFilters(selectedFormat, selectedColors, selectedTypeFilter)
       .then(this.onCardListLoaded)
       .catch((error) => {
         throw new Error(error);

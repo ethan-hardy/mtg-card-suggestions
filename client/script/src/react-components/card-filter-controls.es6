@@ -11,6 +11,12 @@ const COLORS = {
   COLORLESS: {symbol: 'C', displayName: 'Colorless'}
 };
 
+export const TYPE_FILTERS = {
+  ALL: 'All',
+  LANDS: 'Lands',
+  NONLANDS: 'Nonlands'
+};
+
 const getInitialColorMap = function() {
   const colorMap = {};
   _.forEach(COLORS, (color) => {
@@ -19,13 +25,13 @@ const getInitialColorMap = function() {
   return colorMap;
 };
 
-const getFormatOptions = function(formats) {
-  return _.map(formats, (format) => {
+const getOptionsForCollection = function(collection) {
+  return _.map(collection, (member) => {
     return (
       <option
-        value={format}
-        key={format}>
-        {format}
+        value={member}
+        key={member}>
+        {member}
       </option>
     );
   });
@@ -36,7 +42,8 @@ class CardFilterControls extends React.Component {
     super(props);
     this.state = {
       selectedColors: getInitialColorMap(),
-      selectedFormat: props.formats[0] || null
+      selectedFormat: props.formats[0] || null,
+      selectedTypeFilter: TYPE_FILTERS.ALL
     };
   }
 
@@ -63,12 +70,20 @@ class CardFilterControls extends React.Component {
     });
   }
 
+  typeFilterSelected = (e) => {
+    this.setState({
+      selectedTypeFilter: e.target.value
+    });
+  }
+
   submitNewFiltersClicked = () => {
-    this.props.onSubmitNewFilters(this.state.selectedFormat, this.state.selectedColors);
+    this.props.onSubmitNewFilters(
+      this.state.selectedFormat, this.state.selectedColors, this.state.selectedTypeFilter);
   }
 
   render() {
-    const formatOptions = getFormatOptions(this.props.formats);
+    const formatOptions = getOptionsForCollection(this.props.formats);
+    const typeOptions = getOptionsForCollection(TYPE_FILTERS);
     const colorSymbolToggles = _.map(COLORS, (color) => {
       const isSelected = this.state.selectedColors[color.symbol];
       return (
@@ -83,20 +98,25 @@ class CardFilterControls extends React.Component {
       <div className='card-filter-cntnr'>
         <div className='color-select-cntnr'>
           <h1>Select your colors</h1>
-          {colorSymbolToggles}
+          <div className='justify-spc-btwn-cntnr'>{colorSymbolToggles}</div>
         </div>
-        <div className='card-filter--right-content'>
-          <div className='format-cntnr'>
-            <h1>Select your format</h1>
-            <select onChange={this.formatSelected}
-              value={this.state.selectedFormat}>
-              {formatOptions}
-            </select>
-          </div>
-          <div className='button go-button'
-            onClick={this.submitNewFiltersClicked}>
-            Go
-          </div>
+        <div className='format-cntnr'>
+          <h1>Select your format</h1>
+          <select onChange={this.formatSelected}
+            value={this.state.selectedFormat}>
+            {formatOptions}
+          </select>
+        </div>
+        <div className='format-cntnr'>
+          <h1>Filter types</h1>
+          <select onChange={this.typeFilterSelected}
+            value={this.state.selectedTypeFilter}>
+            {typeOptions}
+          </select>
+        </div>
+        <div className='button go-button'
+          onClick={this.submitNewFiltersClicked}>
+          Go
         </div>
       </div>
     );
