@@ -1,5 +1,7 @@
 'use strict';
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
     entry: './client/script/src/index.es6',
     output: {
@@ -8,14 +10,23 @@ module.exports = {
     },
     module: {
         loaders: [
-            // { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!autoprefixer!sass') },
-            { test: /\.es6$/, loader: 'babel-loader' }
+            {
+              test: /\.css$/,
+              loader: ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader')
+            },
+            {
+              test: /\.es6$/,
+              loader: 'babel-loader'
+            },
+            {
+              test: /\.(eot|svg|ttf|otf|woff|woff2)$/,
+              loader: 'file?name=fonts/[name].[ext]'
+            }
         ]
     },
-    // plugins: [
-    //     new ExtractTextPlugin('style/main.css')
-    // ]
-    devtool: "source-map"
+    plugins: [
+        new ExtractTextPlugin('style/main.css')
+    ],
+    // postcss: [ autoprefixer({ browsers: ['last 2 versions'] })],
+    devtool: 'source-map'
 };
-
-// TODO: uncomment these lines when styling is added

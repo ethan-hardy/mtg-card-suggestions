@@ -68,8 +68,9 @@ class CardList extends React.Component {
 
   getPageButtonsContainer() {
     const pageBackClasses = this.isAtFirstPage() ?
-      'page-button disabled' : 'page-button';
-    const pageForwardClasses =  this.isAtLastPage() ? 'page-button disabled' : 'page-button';
+      'button page-button disabled' : 'button page-button';
+    const pageForwardClasses =  this.isAtLastPage() ?
+      'button page-button disabled' : 'button page-button';
 
     return (
       <div className='page-buttons-cntnr'>

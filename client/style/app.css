@@ -1,18 +1,18 @@
 @font-face {
   font-family: 'beleren-bold';
-  src: url(fonts/beleren-bold.ttf);
+  src: url('./fonts/beleren-bold.ttf');
 }
 
 @font-face {
   font-family: 'hkgrotesk';
   font-weight: normal;
-  src: url(fonts/hkgrotesk-light.otf);
+  src: url('./fonts/hkgrotesk-light.otf');
 }
 
 @font-face {
   font-family: 'hkgrotesk';
   font-weight: bold;;
-  src: url(fonts/hkgrotesk-medium.otf);
+  src: url('./fonts/hkgrotesk-medium.otf');
 }
 
 body {
@@ -58,11 +58,8 @@ select {
 
 .card-filter-cntnr {
   width: 700px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
 }
 
 .card-image {
@@ -100,8 +97,5 @@ select {
 }
 
 .color-symbol--unselected {
-  -webkit-filter: brightness(40%);
-          filter: brightness(40%);
+  filter: brightness(40%);
 }
-
-/*# sourceMappingURL=main.css.map*/

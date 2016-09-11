@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import ColorSymbolToggle from './color-symbol-toggle.es6';
 
 const COLORS = {
   RED: {symbol: 'R', displayName: 'Red'},
@@ -19,10 +20,10 @@ const getInitialColorMap = function() {
 };
 
 const getFormatOptions = function(formats) {
-  return _.map(formats, (format, index) => {
+  return _.map(formats, (format) => {
     return (
       <option
-        value={index === 0}
+        value={format}
         key={format}>
         {format}
       </option>
@@ -44,9 +45,13 @@ class CardFilterControls extends React.Component {
     onSubmitNewFilters: React.PropTypes.func.isRequired
   }
 
-  colorSelected = (colorSymbol, e) => {
-    const nextSelectedColors =
-      Object.assign({}, this.state.selectedColors, {[colorSymbol]: e.target.checked});
+  colorToggled = (colorSymbol) => {
+    const previousColorSelectedValue = this.state.selectedColors[colorSymbol];
+    const nextSelectedColors = Object.assign(
+      {},
+      this.state.selectedColors,
+      {[colorSymbol]: !previousColorSelectedValue}
+    );
     this.setState({
       selectedColors: nextSelectedColors
     });
@@ -64,35 +69,34 @@ class CardFilterControls extends React.Component {
 
   render() {
     const formatOptions = getFormatOptions(this.props.formats);
-    const colorCheckboxes = _.map(COLORS, (color) => {
-      const checked = this.state.selectedColors[color.symbol];
+    const colorSymbolToggles = _.map(COLORS, (color) => {
+      const isSelected = this.state.selectedColors[color.symbol];
       return (
-        <div className='color-checkbox-cntnr' key={color.symbol}>
-          <input type='checkbox'
-            className='color-checkbox'
-            onChange={this.colorSelected.bind(null, color.symbol)}
-            checked={checked}
-            value={color.displayName} />
-          <p>{color.displayName}</p>
-        </div>
+        <ColorSymbolToggle colorSymbol={color.symbol}
+          isSelected={isSelected}
+          onToggle={this.colorToggled}
+          key={color.displayName} />
       );
     });
 
     return (
       <div className='card-filter-cntnr'>
-        <div className='format-cntnr'>
-          <p>Select a format:</p>
-          <select onChange={this.formatSelected}>
-            {formatOptions}
-          </select>
-        </div>
         <div className='color-select-cntnr'>
-          <p>Select the colors in your deck:</p>
-          {colorCheckboxes}
+          <h1>Select your colors</h1>
+          {colorSymbolToggles}
         </div>
-        <div className='go-button'
-          onClick={this.submitNewFiltersClicked}>
-          Go
+        <div className='card-filter--right-content'>
+          <div className='format-cntnr'>
+            <h1>Select your format</h1>
+            <select onChange={this.formatSelected}
+              value={this.state.selectedFormat}>
+              {formatOptions}
+            </select>
+          </div>
+          <div className='button go-button'
+            onClick={this.submitNewFiltersClicked}>
+            Go
+          </div>
         </div>
       </div>
     );

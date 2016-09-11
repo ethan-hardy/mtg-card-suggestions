@@ -99,12 +99,17 @@ class Root extends React.Component {
 
     return (
       <div className='app-cntnr'>
-        <CardFilterControls
-          selectedColors={selectedColors}
-          onSubmitNewFilters={this.onSubmitNewFilters}
-          formats={formats}
-        />
-      {bottomContainer}
+        <div className='header-bar'>
+          <h1 className='header-text'>Magic the Gathering Deck Suggestions</h1>
+        </div>
+        <div className='content-cntnr'>
+          <CardFilterControls
+            selectedColors={selectedColors}
+            onSubmitNewFilters={this.onSubmitNewFilters}
+            formats={formats}
+          />
+          {bottomContainer}
+        </div>
       </div>
     );
   }
