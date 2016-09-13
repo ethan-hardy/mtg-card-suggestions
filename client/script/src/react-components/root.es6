@@ -98,7 +98,7 @@ class Root extends React.Component {
     if (!formats.length) { return <div className='app-cntnr' />; }
 
     const bottomContainer = filteredCardNames.length ?
-      (<div className='bottom-cntnr'>
+      (<div className='bottom-cntnr justify-spc-btwn-cntnr'>
         <CardList cardNames={filteredCardNames}
           onSelectCard={this.onSelectCard}
           pageSize={PAGE_SIZE}/>

@@ -4,10 +4,7 @@ import _ from 'lodash';
 class CardList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentPage: 0,
-      selectedCardIndex: null
-    };
+    this.state = this.getDefaultState();
   }
 
   static propTypes = {
@@ -16,12 +13,25 @@ class CardList extends React.Component {
     pageSize: React.PropTypes.number.isRequired
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (_.isEqual(this.props.cardNames, nextProps.cardNames)) { return ; }
+
+    this.setState(this.getDefaultState());
+  }
+
+  getDefaultState() {
+    return {
+      currentPage: 0,
+      selectedCardIndex: null
+    };
+  }
+
   isAtFirstPage = () => {
     return this.state.currentPage === 0;
   }
 
   isAtLastPage = () => {
-    return (this.state.currentPage + 1) * this.props.pageSize > this.props.cardNames.length;
+    return (this.state.currentPage + 1) * this.props.pageSize >= this.props.cardNames.length;
   }
 
   pageBack = () => {
@@ -53,8 +63,9 @@ class CardList extends React.Component {
       .slice(sliceStart, sliceStart + this.props.pageSize)
       .map((cardName, index) => {
         const translatedIndex = index + sliceStart;
-        const classNames = translatedIndex === this.state.selectedCardIndex ?
+        let classNames = translatedIndex === this.state.selectedCardIndex ?
           'card-row card-row--selected' : 'card-row card-row--unselected';
+
         return (
           <div className={classNames}
             key={cardName}
@@ -73,10 +84,11 @@ class CardList extends React.Component {
       'button page-button disabled' : 'button page-button';
 
     return (
-      <div className='page-buttons-cntnr'>
+      <div className='page-buttons-cntnr justify-spc-btwn-cntnr'>
         <div className={pageBackClasses} onClick={this.pageBack}>
           Previous
         </div>
+        <p className='page-number'>{this.state.currentPage + 1}</p>
         <div className={pageForwardClasses} onClick={this.pageForward}>
           Next
         </div>
