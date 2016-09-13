@@ -37,6 +37,7 @@ select {
   border: 1px solid white;
   background-color: rgb(254, 255, 252);
   font-size: 13px;
+  user-select: none;
 }
 
 .app-cntnr {
@@ -45,16 +46,24 @@ select {
 
 .header-bar {
   background-color: rgb(37, 37, 37);
-  height: 90px;
+  height: 50px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .header-text {
   font-size: 33px;
+  margin: 0px;
 }
 
 .content-cntnr {
   padding: 20px;
+}
+
+.bottom-cntnr {
+  margin-top: 20px;
 }
 
 .card-filter-cntnr {
@@ -67,6 +76,45 @@ select {
   border-radius: 10px;
 }
 
+.card-list {
+  width: 60%;
+}
+
+.card-row {
+  padding: 5px;
+  background-color: rgb(92, 92, 92);
+}
+
+.card-row--unselected:hover {
+  background-color: rgb(79, 77, 77);
+}
+
+.card-row--selected {
+  background-color: rgb(60, 59, 59);
+}
+
+.card-row--not-last:after {
+  border-bottom: 1px solid rgb(70, 70, 70);
+  right: 0px;
+  width: 90%;
+}
+
+.card-title {
+  font-size: 18px;
+}
+
+.card-detail-cntnr {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.card-detail--content-cntnr {
+  display: flex;
+  flex-direction: column;
+}
+
 .button {
   height: 20px;
   font-size: 18px;
@@ -75,13 +123,28 @@ select {
   background-color: rgb(112, 112, 112);
   border-radius: 6px;
   cursor: pointer;
+  user-select: none;
 }
 
-.button:hover {
+.page-button {
+  margin: 10px 0px;
+}
+
+.page-number {
+  margin: auto;
+}
+
+.disabled {
+  filter: brightness(50%);
+  cursor: default;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.button:not(.disabled):hover {
   background-color: rgb(91, 91, 91);
 }
 
-.button:active {
+.button:not(.disabled):active {
   background-color: rgb(72, 72, 72);
 }
 
