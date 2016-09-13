@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NO_CARD_SELECTED_IMG_URL = 'todo-make-this-image';
+const NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
 
 const CardDetail = (props) => {
   // props: {cardName}
@@ -9,7 +9,7 @@ const CardDetail = (props) => {
   return (
     <div className='card-detail-cntnr'>
       <div className='card-detail--content-cntnr'>
-        <h1 className='card-title'>{props.cardName}</h1>
+        <h1 className='card-title'>{props.cardName || 'Click a card to show it here'}</h1>
         <a href={`http://gatherer.wizards.com/Pages/Card/Details.aspx?name=${props.cardName}`}>
           <img className='card-image' src={imageUrl} />
         </a>
