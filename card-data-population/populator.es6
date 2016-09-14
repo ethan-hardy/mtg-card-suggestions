@@ -19,14 +19,14 @@ const CARD_DATA_KEYS_TO_SAVE = [
 const SPECIAL_CARD_COLOR_RULES = {
   'Flooded Strand': 'U,W',
   'Bloodstained Mire': 'B,R',
-  'Polluted Delta': 'B/U',
-  'Misty Rainforest': 'U/G',
+  'Polluted Delta': 'B,U',
+  'Misty Rainforest': 'U,G',
   'Scalding Tarn': 'U,R',
-  'Arid Mesa': 'R/W',
+  'Arid Mesa': 'R,W',
   'Windswept Heath': 'G,W',
   'Marsh Flats': 'W/B',
-  'Wooded Foothills': 'R/G',
-  'Verdant Catacombs': 'B/G'
+  'Wooded Foothills': 'R,G',
+  'Verdant Catacombs': 'B,G'
 };
 /* Example mtg api card format (there are a lot more keys; these are the ones I'd use)
 {
