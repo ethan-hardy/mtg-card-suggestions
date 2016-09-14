@@ -34,7 +34,8 @@ module.exports = {
             "error",
             "always"
         ],
-        "react/jsx-uses-vars": 1,
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
         "no-console": "off"
     },
     "plugins": [
