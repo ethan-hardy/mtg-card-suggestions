@@ -69,7 +69,9 @@ class CardList extends React.Component {
         return (
           <div className={classNames}
             key={cardName}
-            onClick={this.cardSelected.bind(null, translatedIndex)}>
+            onClick={this.cardSelected.bind(null, translatedIndex)}
+            tabIndex='0'
+            role='button'>
             <p>{cardName}</p>
           </div>
         );

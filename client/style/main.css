@@ -164,3 +164,7 @@ select {
 .color-symbol--unselected {
   filter: brightness(40%);
 }
+
+.image-loader {
+  display: none;
+}
