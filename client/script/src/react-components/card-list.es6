@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 
+import keyPressHelper from '../util/key-press-helper.es6';
+
 class CardList extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,13 @@ class CardList extends React.Component {
     cardNames: React.PropTypes.array.isRequired,
     onSelectCard: React.PropTypes.func.isRequired,
     pageSize: React.PropTypes.number.isRequired
+  }
+
+  componentDidMount() {
+    keyPressHelper.registerKeyListener('ArrowRight', this.pageForward);
+    keyPressHelper.registerKeyListener('ArrowLeft', this.pageBack);
+    keyPressHelper.registerKeyListener('ArrowUp', this.upDownArrowPressed);
+    keyPressHelper.registerKeyListener('ArrowDown', this.upDownArrowPressed);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,27 +43,55 @@ class CardList extends React.Component {
     return (this.state.currentPage + 1) * this.props.pageSize >= this.props.cardNames.length;
   }
 
+  getTopCellIndex = () => {
+    return this.props.pageSize * this.state.currentPage;
+  }
+
+  getBottomCellIndex = () => {
+    return (this.state.currentPage + 1) * this.props.pageSize - 1;
+  }
+
   pageBack = () => {
     if (this.isAtFirstPage()) { return null; }
     this.setState({
-      currentPage: this.state.currentPage - 1
+      currentPage: this.state.currentPage - 1,
+      selectedCardIndex: null
     });
   }
 
   pageForward = () => {
     if (this.isAtLastPage()) { return null; }
     this.setState({
-      currentPage: this.state.currentPage + 1
+      currentPage: this.state.currentPage + 1,
+      selectedCardIndex: null
     });
   }
 
   cardSelected = (index) => {
+    if (index < this.getTopCellIndex() || index > this.getBottomCellIndex()) { return; }
+
     this.setState({
       selectedCardIndex: index
     }, () => {
       const card = this.props.cardNames[index];
       this.props.onSelectCard(card);
     });
+  }
+
+  upDownArrowPressed = (e) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') { return; }
+    e.preventDefault();
+
+    let selectedCardIndex = e.key === 'ArrowDown' ?
+      this.state.selectedCardIndex + 1 : this.state.selectedCardIndex - 1;
+
+    if (e.key === 'ArrowDown' && this.state.selectedCardIndex === null) {
+      selectedCardIndex = this.getTopCellIndex();
+    } else if (e.key === 'ArrowUp' && this.state.selectedCardIndex === null) {
+      selectedCardIndex = this.getBottomCellIndex();
+    }
+
+    this.cardSelected(selectedCardIndex);
   }
 
   getCardList() {
@@ -69,9 +106,7 @@ class CardList extends React.Component {
         return (
           <div className={classNames}
             key={cardName}
-            onClick={this.cardSelected.bind(null, translatedIndex)}
-            tabIndex='0'
-            role='button'>
+            onClick={this.cardSelected.bind(null, translatedIndex)}>
             <p>{cardName}</p>
           </div>
         );

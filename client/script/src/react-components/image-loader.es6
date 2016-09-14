@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const ImageLoader = ({imageUrls}) => {
   const images = _.map(imageUrls, (imageUrl) => {
-    return (<img className='hidden' src={imageUrl} />);
+    return (<img className='hidden' src={imageUrl} key={imageUrl} />);
   });
 
   return (
