@@ -60,6 +60,9 @@ select {
 
 .content-cntnr {
   padding: 20px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bottom-cntnr {
@@ -67,7 +70,6 @@ select {
 }
 
 .card-filter-cntnr {
-  width: 900px;
   display: flex;
   justify-content: space-around;
 }
@@ -86,18 +88,16 @@ select {
   background-color: rgb(92, 92, 92);
 }
 
-.card-row--unselected:hover {
+.card-row:focus {
+  outline: none;
+}
+
+.card-row--unselected:hover, .card-row--unselected:focus {
   background-color: rgb(79, 77, 77);
 }
 
 .card-row--selected {
   background-color: rgb(60, 59, 59);
-}
-
-.card-row--not-last:after {
-  border-bottom: 1px solid rgb(70, 70, 70);
-  right: 0px;
-  width: 90%;
 }
 
 .card-title {
@@ -107,7 +107,7 @@ select {
 .card-detail-cntnr {
   width: 40%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   padding-top: 5px;
 }
 
