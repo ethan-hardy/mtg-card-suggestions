@@ -4,7 +4,8 @@ const request = require('request');
 const co = require('co');
 
 const CARD_LIST_FILE_PATH = 'web-scraper/card-list.json';
-const POPULATED_CARD_LIST_FILE_PATH = 'card-data-population/populated-card-list.json';
+const POPULATED_CARD_LIST_FILE_NAME = 'populated-card-list.json';
+const POPULATED_CARD_LIST_FILE_PATH = `card-data-population/${POPULATED_CARD_LIST_FILE_NAME}`;
 
 const HTTP_REQ_URL_PREFIX = 'https://api.magicthegathering.io/v1/';
 const HTTP_STATUS_CODE_OK = 200;
@@ -14,6 +15,19 @@ const CARD_DATA_KEYS_TO_SAVE = [
   'name',
   'types'
 ];
+
+const SPECIAL_CARD_COLOR_RULES = {
+  'Flooded Strand': 'U,W',
+  'Bloodstained Mire': 'B,R',
+  'Polluted Delta': 'B/U',
+  'Misty Rainforest': 'U/G',
+  'Scalding Tarn': 'U,R',
+  'Arid Mesa': 'R/W',
+  'Windswept Heath': 'G,W',
+  'Marsh Flats': 'W/B',
+  'Wooded Foothills': 'R/G',
+  'Verdant Catacombs': 'B/G'
+};
 /* Example mtg api card format (there are a lot more keys; these are the ones I'd use)
 {
   "name":"Archangel Avacyn",
@@ -84,24 +98,37 @@ const getColorRulesFromCardData = function(cardData) {
   // slash groups have implicit brackets around them
   // 'C' is used for diamond (colorless) mana
   // for lands, look through their rules text for mana symbols instead
+  if (SPECIAL_CARD_COLOR_RULES[cardData.name]) { return SPECIAL_CARD_COLOR_RULES[cardData.name]; }
+
+  const isLand = _.isArray(cardData.types) && cardData.types.includes(LAND_CARD_TYPE);
   const manaCostSymbolRegex = /{([WGURBC]|(?:[WGURBC]\/[WGURBC]))}/g;
-  const rulesTextSymbolRegex = /{([WGURBC]|(?:[WGURBC]\/[WGURBC]))}(?=[^a-z]*(?:\(|:|\n))/g;
+  // if the card is a land, we don't want to check for colorless as a rule, and we don't care
+  // if the color symbol appears in a cost or in an effect (adding mana to your mana pool)
+  // unless the cost is colorless, in which case we do care
+  const rulesTextSymbolRegex = isLand ?
+    /(?:{([WGURB]|(?:[WGURB]\/[WGURB]))})|(?:{(C)}(?=[^a-z]*(?:\(|:|\n)))/g :
+    /{([WGURBC]|(?:[WGURBC]\/[WGURBC]))}(?=[^a-z]*(?:\(|:|\n))/g;
 
   const rules = [];
   let match = rulesTextSymbolRegex.exec(cardData.text);
   while (!_.isNull(match)) {
-    // match['1'] contains the first capture group, which is set to be the mana symbol
-    rules.push(match['1']);
+    if (match['2'] && match['2'].length > 0) {
+      rules.push(match['2']);
+    } else if (match['1'] && match['1'].length > 0) {
+      rules.push(match['1']);
+    }
     match = rulesTextSymbolRegex.exec(cardData.text);
   }
 
-  const isLand = _.isArray(cardData.types) && cardData.types.includes(LAND_CARD_TYPE);
   if (isLand) { return getRulesStringFromList(rules); }
 
   match = manaCostSymbolRegex.exec(cardData.manaCost);
   while (!_.isNull(match)) {
-    // match['1'] contains the first capture group, which is set to be the mana symbol
-    rules.push(match['1']);
+    if (match['2'] && match['2'].length > 0) {
+      rules.push(match['2']);
+    } else if (match['1'] && match['1'].length > 0) {
+      rules.push(match['1']);
+    }
     match = manaCostSymbolRegex.exec(cardData.manaCost);
   }
 
@@ -118,7 +145,11 @@ const getFormattedDataForCardData = function(cardData) {
 const writePopulatedCardList = function(cardList) {
   fs.writeFile(POPULATED_CARD_LIST_FILE_PATH, JSON.stringify(cardList), (error) => {
     if (error) { throw error; }
-    console.log(`Done! Saved populated card data at ${__dirname}/${POPULATED_CARD_LIST_FILE_PATH}`);
+    if (cardList.incomplete) {
+      console.log('Error encountered -- saving existing list as incomplete (will be resumed on next script run)');
+    } else {
+      console.log(`Done! Saved populated card data at ${__dirname}/${POPULATED_CARD_LIST_FILE_NAME}`);
+    }
   });
 };
 
@@ -149,7 +180,6 @@ const getPopulatedCardList = function*() {
       try {
         cardData = yield pullDataForCardName(card.name);
       } catch (error) {
-        console.log('Error encountered -- saving existing list as incomplete (will be resumed on next script run)');
         populatedCardList.incomplete = true;
         return populatedCardList;
       }
