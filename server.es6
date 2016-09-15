@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const express = require('express');
 const fs = require('fs');
+const request = require('request');
 const app = express();
 
 const POPULATED_CARD_LIST_FILE_PATH = 'card-data-population/populated-card-list.json';
@@ -57,7 +58,7 @@ app.all('/api/*', (req, res, next) => {
 
 app.get('/api/cards', (req, res) => {
   if (!existingCardList) {
-    return app.status(501).send({error: 'Card list not found!'});
+    return res.status(501).send({error: 'Card list not found!'});
   }
 
   const format = _.upperFirst(req.query.format); //format is mandatory for now
@@ -70,15 +71,21 @@ app.get('/api/cards', (req, res) => {
 
 app.get('/api/allFormats', (req, res) => {
   if (!existingCardList) {
-    return app.status(501).send({error: 'Card list not found!'});
+    return res.status(501).send({error: 'Card list not found!'});
   }
 
   const formats = Object.keys(existingCardList);
   res.json({formats});
 });
 
-app.set('port', (process.env.PORT || 5000));
+app.get('/api/cardImage', (req, res) => {
+  const name = req.query.name;
+  const url = `http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=${name}`;
+  request(url).pipe(res);
+});
 
+app.set('port', (process.env.PORT || 5000));
+// app.set('port', (3000));
 
 app.listen(app.get('port'), function() {
   console.log(`App listening on port ${app.get('port')}`);
