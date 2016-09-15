@@ -21516,7 +21516,7 @@
 	  }, '');
 	  var typeFilter = getTypeFilterUrlSection(selectedTypeFilter);
 	
-	  return 'http://' + URL_BASE + '/api/cards?format=' + selectedFormat + '&colors=' + colorStringUrlSection + '&type=' + typeFilter;
+	  return 'https://' + URL_BASE + '/api/cards?format=' + selectedFormat + '&colors=' + colorStringUrlSection + '&type=' + typeFilter;
 	};
 	
 	var get = function get(url) {
@@ -21551,7 +21551,7 @@
 	};
 	
 	var pullAllFormats = function pullAllFormats() {
-	  return get('http://' + URL_BASE + '/api/allFormats').then(function (json) {
+	  return get('https://' + URL_BASE + '/api/allFormats').then(function (json) {
 	    return json.formats;
 	  });
 	};

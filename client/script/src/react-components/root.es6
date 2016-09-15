@@ -23,7 +23,7 @@ const urlForFilters = function(selectedFormat, selectedColors, selectedTypeFilte
   }, '');
   const typeFilter = getTypeFilterUrlSection(selectedTypeFilter);
 
-  return `http://${URL_BASE}/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}&type=${typeFilter}`;
+  return `https://${URL_BASE}/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}&type=${typeFilter}`;
 };
 
 const get = function(url) {
@@ -56,7 +56,7 @@ const getImageUrlsForCardNames = function(cardNames) {
 };
 
 const pullAllFormats = function() {
-  return get(`http://${URL_BASE}/api/allFormats`).then((json) => {
+  return get(`https://${URL_BASE}/api/allFormats`).then((json) => {
     return json.formats;
   });
 };
