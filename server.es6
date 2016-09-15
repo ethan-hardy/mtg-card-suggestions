@@ -84,6 +84,12 @@ app.get('/api/cardImage', (req, res) => {
   request(url).pipe(res);
 });
 
+app.get('/api/symbolImage', (req, res) => {
+  const name = req.query.name;
+  const url = `http://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=${name}&type=symbol`;
+  request(url).pipe(res);
+});
+
 app.set('port', (process.env.PORT || 5000));
 // app.set('port', (3000));
 

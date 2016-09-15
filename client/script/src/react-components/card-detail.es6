@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const CardDetail = ({cardName, cardImageUrl}) => {
   return (
     <div className='card-detail-cntnr'>

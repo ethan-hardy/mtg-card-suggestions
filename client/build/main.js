@@ -21500,6 +21500,13 @@
 	var URL_BASE = window.location.hostname;
 	var NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
 	
+	var pullCardsForFilters = function pullCardsForFilters(selectedFormat, selectedColors, selectedTypeFilter) {
+	  var url = urlForFilters(selectedFormat, selectedColors, selectedTypeFilter);
+	  return get(url).then(function (json) {
+	    return json.cards;
+	  });
+	};
+	
 	var getTypeFilterUrlSection = function getTypeFilterUrlSection(typeFilter) {
 	  switch (typeFilter) {
 	    case _cardFilterControls.TYPE_FILTERS.LANDS:
@@ -21535,13 +21542,6 @@
 	
 	    req.open('GET', url);
 	    req.send();
-	  });
-	};
-	
-	var pullCardsForFilters = function pullCardsForFilters(selectedFormat, selectedColors, selectedTypeFilter) {
-	  var url = urlForFilters(selectedFormat, selectedColors, selectedTypeFilter);
-	  return get(url).then(function (json) {
-	    return json.cards;
 	  });
 	};
 	
@@ -41315,8 +41315,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var URL_BASE = window.location.hostname;
+	
 	var getColorSymbolImageUrl = function getColorSymbolImageUrl(symbol) {
-	  return 'http://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=' + symbol + '&type=symbol';
+	  return 'https://' + URL_BASE + '/api/symbolImage?name=' + symbol;
 	};
 	
 	var ColorSymbolToggle = function ColorSymbolToggle(_ref) {

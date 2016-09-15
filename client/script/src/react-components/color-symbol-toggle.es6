@@ -1,7 +1,9 @@
 import React from 'react';
 
+const URL_BASE = window.location.hostname;
+
 const getColorSymbolImageUrl = function(symbol) {
-  return `http://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=${symbol}&type=symbol`;
+  return `https://${URL_BASE}/api/symbolImage?name=${symbol}`;
 };
 
 const ColorSymbolToggle = ({colorSymbol, isSelected, onToggle}) => {

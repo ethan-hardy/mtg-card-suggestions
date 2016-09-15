@@ -10,6 +10,13 @@ const PAGE_SIZE = 20;
 const URL_BASE = window.location.hostname;
 const NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
 
+const pullCardsForFilters = function(selectedFormat, selectedColors, selectedTypeFilter) {
+  const url = urlForFilters(selectedFormat, selectedColors, selectedTypeFilter);
+  return get(url).then((json) => {
+    return json.cards;
+  });
+};
+
 const getTypeFilterUrlSection = function(typeFilter) {
   switch (typeFilter) {
   case TYPE_FILTERS.LANDS: return 'Land';
@@ -40,13 +47,6 @@ const get = function(url) {
 
     req.open('GET', url);
     req.send();
-  });
-};
-
-const pullCardsForFilters = function(selectedFormat, selectedColors, selectedTypeFilter) {
-  const url = urlForFilters(selectedFormat, selectedColors, selectedTypeFilter);
-  return get(url).then((json) => {
-    return json.cards;
   });
 };
 
