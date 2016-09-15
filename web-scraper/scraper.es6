@@ -1,7 +1,7 @@
 const casper = require('casper').create();
 const fs = require('fs');
 
-const CARD_LIST_FILE_PATH = 'card-list.json';
+const CARD_LIST_FILE_PATH = 'web-scraper/card-list.json';
 
 const FORMATS = {
   STANDARD: 'Standard',
