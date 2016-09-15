@@ -35,10 +35,10 @@
   },
   "scripts": {
     "test": "test",
-    "build-scraper": "babel web-scraper/scraper.es6 --watch --out-file web-scraper/casper-scraper.js",
+    "build-scraper": "babel web-scraper/scraper.es6 --out-file web-scraper/casper-scraper.js",
     "scrape": "casperjs web-scraper/casper-scraper.js",
     "populate": "node card-data-population/populator.es6",
-    "build-client": "webpack --watch",
+    "build-client": "webpack",
     "start": "node server.es6"
   },
   "keywords": [
