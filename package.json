@@ -48,6 +48,10 @@
     "card",
     "suggest"
   ],
+  "engines": {
+    "node": "6.4.0",
+    "npm": "3.10.3"
+  },
   "author": "Ethan Hardy",
   "license": "MIT",
   "repository": {
