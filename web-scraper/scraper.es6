@@ -1,4 +1,7 @@
-const casper = require('casper').create();
+const casper = require('casper').create({
+  // verbose: true,
+  // logLevel: 'debug'
+});
 const fs = require('fs');
 
 const CARD_LIST_FILE_PATH = 'web-scraper/card-list.json';
@@ -28,7 +31,8 @@ const getCardDataOnCurrentPage = function() {
     const rowChildren = $(cardRow).children();
     const cardName = $(rowChildren[0]).text();
     const cardPercentageText = $(rowChildren[1]).text();
-    const cardPercent = window.getNumberFromPercentageText(cardPercentageText);
+    const percentString = cardPercentageText.split(' ')[0];
+    const cardPercent = parseFloat(percentString);
 
     const cardDatum = {name: cardName, percent: cardPercent};
     cardData.push(cardDatum);
@@ -91,7 +95,8 @@ casper.options.onResourceRequested = function(casperInstance, requestData, netwo
     '.gif',
     'AdServer',
     'pagead2',
-    'ad.doubleclick.net'
+    'ad.doubleclick.net',
+
   ];
 
   urlBlacklist.forEach(function(urlToBlacklist) {
@@ -100,16 +105,6 @@ casper.options.onResourceRequested = function(casperInstance, requestData, netwo
     }
   });
 };
-
-casper.then(function() {
-  casper.evaluate(function() {
-    // set up helper fns in evaluate scope
-    window.getNumberFromPercentageText = function(text) {
-      const percentString = text.split(' ')[0];
-      return parseFloat(percentString);
-    };
-  });
-});
 
 const formatData = {};
 for (let i = 0; i < FORMAT_LIST.length; i++) {

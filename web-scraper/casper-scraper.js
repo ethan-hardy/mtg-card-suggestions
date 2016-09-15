@@ -14,10 +14,13 @@ var _keys2 = _interopRequireDefault(_keys);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var casper = require('casper').create();
+var casper = require('casper').create({
+  // verbose: true,
+  // logLevel: 'debug'
+});
 var fs = require('fs');
 
-var CARD_LIST_FILE_PATH = 'card-list.json';
+var CARD_LIST_FILE_PATH = 'web-scraper/card-list.json';
 
 var FORMATS = {
   STANDARD: 'Standard',
@@ -46,7 +49,8 @@ var getCardDataOnCurrentPage = function getCardDataOnCurrentPage() {
     var rowChildren = $(cardRow).children();
     var cardName = $(rowChildren[0]).text();
     var cardPercentageText = $(rowChildren[1]).text();
-    var cardPercent = window.getNumberFromPercentageText(cardPercentageText);
+    var percentString = cardPercentageText.split(' ')[0];
+    var cardPercent = parseFloat(percentString);
 
     var cardDatum = { name: cardName, percent: cardPercent };
     cardData.push(cardDatum);
@@ -111,16 +115,6 @@ casper.options.onResourceRequested = function (casperInstance, requestData, netw
     }
   });
 };
-
-casper.then(function () {
-  casper.evaluate(function () {
-    // set up helper fns in evaluate scope
-    window.getNumberFromPercentageText = function (text) {
-      var percentString = text.split(' ')[0];
-      return parseFloat(percentString);
-    };
-  });
-});
 
 var formatData = {};
 for (var i = 0; i < FORMAT_LIST.length; i++) {
