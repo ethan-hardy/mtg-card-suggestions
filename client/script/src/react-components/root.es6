@@ -112,7 +112,7 @@ class Root extends React.Component {
         <CardList cardNames={filteredCardNames}
           onSelectCard={this.onSelectCard}
           pageSize={PAGE_SIZE}/>
-        <CardDetail cardUrl={displayedCard} cardImageUrl={getImageUrlForCardName(displayedCard)} />
+        <CardDetail cardName={displayedCard} cardImageUrl={getImageUrlForCardName(displayedCard)} />
         <ImageLoader imageUrls={filteredCardImageUrls} />
       </div>) : <div className='bottom-cntnr' />;
 

@@ -21625,7 +21625,7 @@
 	        _react2.default.createElement(_cardList2.default, { cardNames: filteredCardNames,
 	          onSelectCard: this.onSelectCard,
 	          pageSize: PAGE_SIZE }),
-	        _react2.default.createElement(_cardDetail2.default, { cardUrl: displayedCard, cardImageUrl: getImageUrlForCardName(displayedCard) }),
+	        _react2.default.createElement(_cardDetail2.default, { cardName: displayedCard, cardImageUrl: getImageUrlForCardName(displayedCard) }),
 	        _react2.default.createElement(_imageLoader2.default, { imageUrls: filteredCardImageUrls })
 	      ) : _react2.default.createElement('div', { className: 'bottom-cntnr' });
 	
