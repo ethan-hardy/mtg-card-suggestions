@@ -8,6 +8,7 @@ import ImageLoader from './image-loader.es6';
 const PAGE_SIZE = 20;
 
 const URL_BASE = window.location.hostname;
+const NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
 
 const getTypeFilterUrlSection = function(typeFilter) {
   switch (typeFilter) {
@@ -49,10 +50,12 @@ const pullCardsForFilters = function(selectedFormat, selectedColors, selectedTyp
   });
 };
 
+const getImageUrlForCardName = function(cardName) {
+  return cardName ? `https://${URL_BASE}/api/cardImage?name=${cardName}` : NO_CARD_SELECTED_IMG_URL;
+};
+
 const getImageUrlsForCardNames = function(cardNames) {
-  return _.map(cardNames, (cardName) => {
-    return `http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=${cardName}`;
-  });
+  return _.map(cardNames, getImageUrlForCardName);
 };
 
 const pullAllFormats = function() {
@@ -109,7 +112,7 @@ class Root extends React.Component {
         <CardList cardNames={filteredCardNames}
           onSelectCard={this.onSelectCard}
           pageSize={PAGE_SIZE}/>
-        <CardDetail cardName={displayedCard} />
+        <CardDetail cardUrl={displayedCard} cardImageUrl={getImageUrlForCardName(displayedCard)} />
         <ImageLoader imageUrls={filteredCardImageUrls} />
       </div>) : <div className='bottom-cntnr' />;
 

@@ -21498,6 +21498,7 @@
 	var PAGE_SIZE = 20;
 	
 	var URL_BASE = window.location.hostname;
+	var NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
 	
 	var getTypeFilterUrlSection = function getTypeFilterUrlSection(typeFilter) {
 	  switch (typeFilter) {
@@ -21544,10 +21545,12 @@
 	  });
 	};
 	
+	var getImageUrlForCardName = function getImageUrlForCardName(cardName) {
+	  return cardName ? 'https://' + URL_BASE + '/api/cardImage?name=' + cardName : NO_CARD_SELECTED_IMG_URL;
+	};
+	
 	var getImageUrlsForCardNames = function getImageUrlsForCardNames(cardNames) {
-	  return _lodash2.default.map(cardNames, function (cardName) {
-	    return 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=' + cardName;
-	  });
+	  return _lodash2.default.map(cardNames, getImageUrlForCardName);
 	};
 	
 	var pullAllFormats = function pullAllFormats() {
@@ -21622,7 +21625,7 @@
 	        _react2.default.createElement(_cardList2.default, { cardNames: filteredCardNames,
 	          onSelectCard: this.onSelectCard,
 	          pageSize: PAGE_SIZE }),
-	        _react2.default.createElement(_cardDetail2.default, { cardName: displayedCard }),
+	        _react2.default.createElement(_cardDetail2.default, { cardUrl: displayedCard, cardImageUrl: getImageUrlForCardName(displayedCard) }),
 	        _react2.default.createElement(_imageLoader2.default, { imageUrls: filteredCardImageUrls })
 	      ) : _react2.default.createElement('div', { className: 'bottom-cntnr' });
 	
@@ -40973,13 +40976,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var NO_CARD_SELECTED_IMG_URL = '../../../resources/mtgsymbol.png';
-	
 	var CardDetail = function CardDetail(_ref) {
 	  var cardName = _ref.cardName;
-	  var cardImage = _ref.cardImage;
+	  var cardImageUrl = _ref.cardImageUrl;
 	
-	  var imageUrl = cardName ? 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=' + cardName : NO_CARD_SELECTED_IMG_URL;
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'card-detail-cntnr' },
@@ -40994,7 +40994,7 @@
 	      _react2.default.createElement(
 	        'a',
 	        { href: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=' + cardName },
-	        _react2.default.createElement('img', { className: 'card-image', src: imageUrl })
+	        _react2.default.createElement('img', { className: 'card-image', src: cardImageUrl })
 	      )
 	    )
 	  );
