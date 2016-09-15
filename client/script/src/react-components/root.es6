@@ -7,6 +7,8 @@ import ImageLoader from './image-loader.es6';
 
 const PAGE_SIZE = 20;
 
+const URL_BASE = window.location.hostname;
+
 const getTypeFilterUrlSection = function(typeFilter) {
   switch (typeFilter) {
   case TYPE_FILTERS.LANDS: return 'Land';
@@ -21,7 +23,7 @@ const urlForFilters = function(selectedFormat, selectedColors, selectedTypeFilte
   }, '');
   const typeFilter = getTypeFilterUrlSection(selectedTypeFilter);
 
-  return `http://localhost:3000/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}&type=${typeFilter}`;
+  return `http://${URL_BASE}/api/cards?format=${selectedFormat}&colors=${colorStringUrlSection}&type=${typeFilter}`;
 };
 
 const get = function(url) {
@@ -54,7 +56,7 @@ const getImageUrlsForCardNames = function(cardNames) {
 };
 
 const pullAllFormats = function() {
-  return get('http://localhost:3000/api/allFormats').then((json) => {
+  return get(`http://${URL_BASE}/api/allFormats`).then((json) => {
     return json.formats;
   });
 };
